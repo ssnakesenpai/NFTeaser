@@ -28,5 +28,8 @@
   },
   "devDependencies": {
     "hardhat": "^2.9.3"
+  },
+  "directories": {
+    "test": "test"
   }
 }
