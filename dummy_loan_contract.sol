@@ -2,7 +2,6 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-
 contract LendNft {
 
     struct loanOffer {
@@ -12,18 +11,30 @@ contract LendNft {
         uint nftID;
         uint loanPrice;
         uint Colat;
-        uint loanLength
+        uint maxLoanLength;
         enum loanStatus {"offered","loanedOut","loanSettled"};
         uint loanExpiry;
     }
 
-    // struct for LoanInitiate
+    // struct for LoanAgreed
+
+    mapping (address => bool) blacklist;
+
+    struct loanAgreed{
+        address borrower;
+        address lender;
+        address nftContract;
+        uint nftID;
+        uint loanlength;
+        uint loanExpiry;
+        uint collateralAmount;
+        uint loanFee;
+    }
 
     mapping(uint => loan) loans;
 
-    function createLoan(address lender, uint _colat, uint _loanAmount, uint maxLoanLength) public payable {
-        loanOffer memory loan = loanOffer(_nft)
-
+    function createLoan(uint _colat, uint _loanPrice, uint _maxLoanLength,) public payable {
+        loanOffer storage loan = loanOffer(_nft)
     }
 
     function InitLoan() payable {
@@ -34,6 +45,23 @@ contract LendNft {
         // start timer
         // takes cut from LoanFee
         // pay remainder LoanFee to lender
+    }
+
+    function liquidateLoan() external {
+        // close loan
+    }
+
+    function repayLoan() payable {
+        // mark complete
+        // receives the NFT
+        // returns collateral
+    }
+
+
+    // can we farm collateral?
+    // 
+
+}
     }
 
     function liquidateLoan() external {
