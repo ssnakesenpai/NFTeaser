@@ -12,6 +12,7 @@ contract LendNft is IERC721Receiver {
     // loanOffer and loan both accessed through a mapping from loanOfferId and loanID  
     // Structure for Loan Offer
     event loanCreated(address _loanCreator, address _nftAddress, uint NftID, uint _loanFee, uint _colateralAmount,  uint _lengthInDays);
+    
     address owner;
     mapping(uint => bool) loanActive;
 
@@ -47,6 +48,8 @@ contract LendNft is IERC721Receiver {
     uint public loanOfferID;
     uint public loanID;
 
+    uint public timeMultiplier=1;
+
     // Mappings from loanOfferID to respective loan
     mapping(uint => _loanOffer) public loanOffers;
     mapping(uint => _loan) public loans;
@@ -54,12 +57,14 @@ contract LendNft is IERC721Receiver {
     // Array of activeOffers - getter function will return an array of activeOfferIDs. 
     // Getter function is getActiveOffers(). Needs to updated with updateActiveOffers()
     uint[] public activeOffers;
-
-    function createLoanOffer(address _nft, uint _id, uint _fee, uint _collateral, uint _length ) public payable { 
-        //Requires NFT approval  
+    
+    function createLoanOffer(address _nft, uint _id, uint _fee, uint _collateral, uint _lengthInDays ) public payable { 
+        //Requires NFT approval
         IERC721(_nft).transferFrom(msg.sender, address(this), _id);
-        loanOffers[loanOfferID]=_loanOffer(true, _nft, _id, msg.sender , _fee, _collateral, _length, block.timestamp + (_length * 86400) , block.timestamp);
-        emit loanCreated(msg.sender,_nft,_id,_fee,_collateral,_length);
+        loanOffers[loanOfferID]=_loanOffer(true, _nft, _id, msg.sender , _fee, _collateral, _lengthInDays, block.timestamp + (_lengthInDays * timeMultiplier) , block.timestamp);
+        
+        emit loanCreated(msg.sender,_nft,_id,_fee,_collateral,_lengthInDays);
+        
         //receive NFT 
         loanOfferID++;
     }
@@ -87,25 +92,35 @@ contract LendNft is IERC721Receiver {
 
         //Add active loan
         loanActive[loanID] = true;
-        loans[loanID]=_loan(true, _loanOfferID, loanOffers[_loanOfferID], msg.sender, block.timestamp, block.timestamp + loanOffers[loanID].loanLength,loanOffers[loanID].lender, loanOffers[loanID].loanCollateral);
+        loans[loanID]=_loan(true, _loanOfferID, loanOffers[_loanOfferID], msg.sender, block.timestamp, block.timestamp + (loanOffers[_loanOfferID].loanLength * timeMultiplier),loanOffers[loanID].lender, loanOffers[loanID].loanCollateral);
         loanID++;
 
     }
 
 
-    function liquidateLoan(uint _loanID) external payable {
-        require(msg.sender == owner,"not owner");
-        require(loanActive[_loanID] == true,"loan not active");
-        require(block.timestamp > loans[_loanID].returnTime,"not time to liquidate");
-        loanActive[_loanID] = false;
-        payable(loans[_loanID]._lender).transfer(loans[_loanID].loanCollateral);
+    function liquidateLoan() external payable {
+        for(uint i; i<loanID; i++) { 
+            //require(msg.sender == owner,"not owner"); < Do we need owner here? 
+            require(loanActive[i] == true,"loan not active");
+            require(block.timestamp > loans[i].returnTime,"not time to liquidate");
+            loanActive[i] = false;
+            loans[i].active=false;
+            payable(loans[i]._lender).transfer(loans[i].loanCollateral);
+        }
     }
 
-    // function repayLoan() payable {
-    //     // mark complete
-    //     // receives the NFT
-    //     // returns collateral
-    // }
+    function repayLoan(uint _loanID) public payable {
+       require(loans[_loanID].active==true);
+       require(loans[_loanID].borrower==msg.sender);
+       //Receive NFT from msg sender
+       IERC721(loans[_loanID].loanOffer.nftContract).transferFrom(msg.sender, address(this), loans[_loanID].loanOffer.nftID);
+       
+       //Repay the collateral
+       payable(loans[_loanID]._lender).transfer(loans[_loanID].loanCollateral);
+
+       //Send NFT back to owner
+       IERC721(loans[_loanID].loanOffer.nftContract).transferFrom(address(this), loanOffers[_loanID].lender , loans[_loanID].loanOffer.nftID);
+    }
 
     
     // Receive ERC721 
