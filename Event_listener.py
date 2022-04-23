@@ -3,9 +3,10 @@
 from brownie import *
 import requests
 import json
+from abi import *
 
 NFLaddress = ''
-NFLabi = ""
+NFLabi = abi
 
 def runFilter():
     filter = web3.eth.contract(address=NFLaddress, abi=NFLabi).events.Sync.createFilter(fromBlock='latest')
