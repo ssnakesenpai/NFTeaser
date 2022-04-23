@@ -12,18 +12,22 @@
     <br>
     
 
-<input type="submit" value="Submit"/><br>
+
 <span class="v2_37">NFTeaser</span>
     <div class="v2_7"><div class="v60_220"></div><div class="v2_8"><div class="v2_9"><br>
-      <br>
-      <br> Start your first NFTease now!
+      <br><br><br>
+      <br> <i>Start your first NFTease now!</i><br>
       <br><br><br><br>
       NFT contract to loan:<input type="text" id="NFTcontract"/><br><br>
       NFT-ID:<input type="text" id="NFTid"/><br><br>
       Loan Fee:<input type="text" id="_fee"/><br><br>
       Collateral:<input type="text" id="_collateral"/><br><br>
-      Loan Length (days):<input type="text" id="NFTid"/><br><br><div class="v2_10"></div></div><div class="v2_12"><span class="v2_16">About Us</span><span class="v2_17"></span><span class="v2_18"></span><span class="v2_19">Home</span><span class="v2_20"></span><div class="v2_21"><div class="v2_22"></div><span class="v2_23">Sign up</span></div><div class="v2_24"><span class="v2_25">EN</span><div class="v2_26"></div></div></div><div class="v2_27"><div class="v2_28"><div class="v2_29"><div class="v2_30"><div class="v2_31"></div><span class="v2_32">Discover more</span></div></div><span class="v2_35"> </span></div></div></div><div class="v15_35"></div><div class="v14_9"></div><div class="v69_412"><span class="v69_413">+</span><span class="v69_414">+</span><span class="v69_415">+</span><span class="v69_416">+</span><span class="v69_417">+</span><span class="v69_418">+</span><span class="v69_419">+</span><span class="v69_420">+</span><span class="v69_421">+</span><span class="v69_422">+</span><span class="v69_423">+</span><span class="v69_424">+</span><span class="v69_425">+</span><span class="v69_426">+</span><span class="v69_427">+</span><span class="v69_428">+</span><span class="v69_429">+</span><span class="v69_430">+</span><span class="v69_431">+</span><span class="v69_432">+</span><span class="v69_433">+</span><span class="v69_434">+</span></div><div class="v201_17"><div class="v2_61"></div><div class="v76_5"></div><div class="v15_34"></div><div class="v12_5"></div><div class="v12_6"></div><div class="v12_7"></div><div class="v75_3"></div></div><span class="v201_16">NFTeaser</span></div>
+      Loan Length <b>(days)</b>:<input type="text" id="NFTid"/><br>
+      <input type="submit" value="Submit"/><br>
+      <br><div class="v2_10"></div></div><div class="v2_12"><span class="v2_16">About Us</span><span class="v2_17"></span><span class="v2_18"></span><span class="v2_19">Home</span><span class="v2_20"></span><div class="v2_21"><div class="v2_22"></div><span class="v2_23">Sign up</span></div><div class="v2_24"><span class="v2_25">EN</span><div class="v2_26"></div></div></div><div class="v2_27"><div class="v2_28"><div class="v2_29"><div class="v2_30"><div class="v2_31"></div><span class="v2_32">Discover more</span></div></div><span class="v2_35"> </span></div></div></div><div class="v15_35"></div><div class="v14_9"></div><div class="v69_412"><span class="v69_413">+</span><span class="v69_414">+</span><span class="v69_415">+</span><span class="v69_416">+</span><span class="v69_417">+</span><span class="v69_418">+</span><span class="v69_419">+</span><span class="v69_420">+</span><span class="v69_421">+</span><span class="v69_422">+</span><span class="v69_423">+</span><span class="v69_424">+</span><span class="v69_425">+</span><span class="v69_426">+</span><span class="v69_427">+</span><span class="v69_428">+</span><span class="v69_429">+</span><span class="v69_430">+</span><span class="v69_431">+</span><span class="v69_432">+</span><span class="v69_433">+</span><span class="v69_434">+</span></div><div class="v201_17"><div class="v2_61"></div><div class="v76_5"></div><div class="v15_34"></div><div class="v12_5"></div><div class="v12_6"></div><div class="v12_7"></div><div class="v75_3"></div></div><span class="v201_16">NFTeaser</span></div>
 <script>
+
+  
     // connect to Moralis server
 
     const serverUrl = "https://cpty5n67a4ei.usemoralis.com:2053/server";
@@ -31,13 +35,13 @@
     Moralis.start({ serverUrl, appId });
 
   </script>
-<script>
+  <script>
     async function login() {
       let user = Moralis.User.current();
       if (!user) {
         user = await Moralis.authenticate();
       }
-      await Moralis.enableWeb3();
+
       console.log("logged in user:", user);
       
     }
@@ -47,31 +51,11 @@
       console.log("logged out");
     }
 
-    async function loanNFT() {
-        let options = {
-          contractAddress: "0x61685a578b988655fA48F60e4B5F0fFbBc768d1C",
-          functionName: "newDonation",
-          abi: [
-            {
-              inputs: [	{	"internalType": "address",	"name": "_nft",	"type": "address"		},	{	"internalType": "uint256",	"name": "_id","type": "uint256"	},{	"internalType": "uint256","name": "_fee",	"type": "uint256"	},{	"internalType": "uint256","name": "_collateral","type": "uint256"	},{	"internalType": "uint256","name": "_length","type": "uint256"	}],
-              name: "createLoanOffer",
-              outputs: [],
-              stateMutability: "payable",
-              type: "function",
-            },
-          ],
-          Params: {
-            _nft: "Thanks for your work",
-          },
-          msgValue: Moralis.Units.ETH(0.1),
-        };
-        await Moralis.User.logOut();
-        console.log("logged out");
-
     document.getElementById("btn-login").onclick = login;
     document.getElementById("btn-logout").onclick = logOut;
-    document.getElementById("btn-loanNFT").onclick = loanNFT;
     </script>
+
+
 
 
 </body>
