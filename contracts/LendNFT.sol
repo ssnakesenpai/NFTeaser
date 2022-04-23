@@ -45,7 +45,8 @@ contract LendNft is IERC721Receiver {
     uint[] public activeOffers;
 
     function createLoanOffer(address _nft, uint _id, address _lender, uint _fee, uint _collateral, uint _length, uint _expiry) public payable { 
-        loanOffers[_loanOfferID]=loanOffer(true, _nft, _id,_lender, _fee, _collateral, _length, _expiry, now); 
+        IERC721(_nft).transferFrom(msg.sender, address(this), _id);
+        loanOffers[_loanOfferID]=_loanOffer(true, _nft, _id,_lender, _fee, _collateral, _length, _expiry, 10); 
         //receive NFT 
         _loanOfferID++;
     }
@@ -64,15 +65,15 @@ contract LendNft is IERC721Receiver {
         return activeOffers;
     }
 
-     function InitLoan() payable {
-        require(msg.value >= _colat + _loanAmount,"not enough colateral");
+    //  function InitLoan() payable {
+    //     require(msg.value >= _colat + _loanAmount,"not enough colateral");
         // require requested loanlength < max loan length
         // record loan details
         // transfer the NFT
         // start timer
         // takes cut from LoanFee
         // pay remainder LoanFee to lender
-    }
+  //  }
 
     // function createLoan(address lender, uint _colat, uint _loanAmount, uint maxLoanLength) public payable {
     //     loanOffer memory loan = loanOffer(_nft)
