@@ -33,8 +33,8 @@ contract LendNft is IERC721Receiver {
     }
 
     // loanOfferID and loanID that starts at 0. ++ each time a new offer is put up
-    uint public _loanOfferID;
-    uint public _loanID;
+    uint public loanOfferID;
+    uint public loanID;
 
     // Mappings from loanOfferID to respective loan
     mapping(uint => _loanOffer) public loanOffers;
@@ -47,24 +47,52 @@ contract LendNft is IERC721Receiver {
     function createLoanOffer(address _nft, uint _id, address _lender, uint _fee, uint _collateral, uint _length, uint _expiry) public payable { 
         //Requires NFT approval  
         IERC721(_nft).transferFrom(msg.sender, address(this), _id);
-        loanOffers[_loanOfferID]=_loanOffer(true, _nft, _id,_lender, _fee, _collateral, _length, _expiry, 10); 
+        loanOffers[loanOfferID]=_loanOffer(true, _nft, _id,_lender, _fee, _collateral, _length, _expiry, 10); 
         //receive NFT 
-        _loanOfferID++;
+        loanOfferID++;
+    }
+
+    //_id=_loanOfferID
+    function cancelLoanOffer(uint _loanOfferID) public payable { 
+        //Needs that the sender is loanoffer owner and that it's still active
+        require(loanOffers[_loanOfferID].lender==msg.sender && loanOffers[_loanOfferID].active==true);
+
+        //Transfer NFT from contract address to message sender
+        IERC721(loanOffers[_loanOfferID].nftContract).transferFrom(address(this),msg.sender, loanOffers[_loanOfferID].nftID);
+        
+        loanOffers[_loanOfferID].active=false;
     }
 
     // Function to update the activeOffers array that returns the loanIDs
     function updateActiveOffers() public { 
         delete activeOffers;
-        for(uint i=0; i<_loanOfferID; i++) { 
+        for(uint i=0; i < loanOfferID; i++) { 
             require(loanOffers[i].active==true); 
             activeOffers.push(i);
         }
     }
 
     // Getter function for active offers
-    function getActiveOffers() public view returns(uint[] memory) { 
+    function getAllActiveOffers() public view returns(uint[] memory) { 
         return activeOffers;
     }
+
+    //This fn doesnt work
+    // function getActiveOffers(address _address) public view returns(uint[] memory) { 
+    //     uint[] memory allOffers=getAllActiveOffers();
+    //     uint[] memory specific;
+    //     uint j;
+    //     for(uint i=0; i<allOffers.length; i++) { 
+    //         if(loanOffers[ allOffers[i] ].lender==_address) { 
+    //             specific[j] = allOffers[i];
+    //             j++;
+    //         }
+    //         else { 
+    //             j++;
+    //         }
+    //     }
+    //     return specific;
+    // }
 
     //  function InitLoan() payable {
     //     require(msg.value >= _colat + _loanAmount,"not enough colateral");
