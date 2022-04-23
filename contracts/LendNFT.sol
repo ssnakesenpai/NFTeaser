@@ -45,6 +45,7 @@ contract LendNft is IERC721Receiver {
     uint[] public activeOffers;
 
     function createLoanOffer(address _nft, uint _id, address _lender, uint _fee, uint _collateral, uint _length, uint _expiry) public payable { 
+        //Requires NFT approval  
         IERC721(_nft).transferFrom(msg.sender, address(this), _id);
         loanOffers[_loanOfferID]=_loanOffer(true, _nft, _id,_lender, _fee, _collateral, _length, _expiry, 10); 
         //receive NFT 
