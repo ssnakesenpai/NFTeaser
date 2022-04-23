@@ -64,12 +64,21 @@ describe("LendNft", function () {
     expect(await nftm.ownerOf(nftid)).to.equal(lending.address);
     console.log('NFT lent out and owner should be ' + await nftm.ownerOf(nftid));
 
-    await lending.updateActiveOffers();
-    all=await lending.getAllActiveOffers();
-    console.log(all);
+
+  });
+
+  it("Should be able to borrow", async function () {
+    //Mint + Approve
+    await nftm.safeMint(acc_add, nftid);
+    expect(await nftm.ownerOf(nftid)).to.equal(acc_add);
+    console.log('NFT Minted and Owner should be account' + await nftm.ownerOf(nftid));
     
-    specific=await lending.getActiveOffers(acc_add);
-    console.log(specific);
+    //Lend out NFT
+    await nftm.approve(lending.address, nftid);
+    await lending.createLoanOffer(nftm.address, nftid, acc_add,1,10, 20, 100);    
+    expect(await nftm.ownerOf(nftid)).to.equal(lending.address);
+    console.log('NFT lent to protocol and owner should be ' + await nftm.ownerOf(nftid));
+
 
   });
 

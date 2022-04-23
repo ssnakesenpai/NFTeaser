@@ -25,6 +25,7 @@ contract LendNft is IERC721Receiver {
         }
 
     struct _loan {
+    bool active;
     uint loanOfferID;
     _loanOffer loanOffer;
     address borrower;
@@ -47,7 +48,7 @@ contract LendNft is IERC721Receiver {
     function createLoanOffer(address _nft, uint _id, address _lender, uint _fee, uint _collateral, uint _length, uint _expiry) public payable { 
         //Requires NFT approval  
         IERC721(_nft).transferFrom(msg.sender, address(this), _id);
-        loanOffers[loanOfferID]=_loanOffer(true, _nft, _id,_lender, _fee, _collateral, _length, _expiry, 10); 
+        loanOffers[loanOfferID]=_loanOffer(true, _nft, _id,_lender, _fee, _collateral, _length, _expiry, block.timestamp); 
         //receive NFT 
         loanOfferID++;
     }
@@ -75,6 +76,20 @@ contract LendNft is IERC721Receiver {
     // Getter function for active offers
     function getAllActiveOffers() public view returns(uint[] memory) { 
         return activeOffers;
+    }
+
+
+    function takeLoan(uint _loanOfferID) public payable { 
+        require(msg.value == loanOffers[_loanOfferID].loanCollateral + loanOffers[_loanOfferID].loanFee);
+        //Send NFT 
+        IERC721(loanOffers[_loanOfferID].nftContract).transferFrom(address(this),msg.sender, loanOffers[_loanOfferID].nftID);
+        //Make loanOffer active = F 
+        loanOffers[loanID].active=false;
+
+        //Add active loan
+        loans[loanID]=_loan(true, _loanOfferID, loanOffers[_loanOfferID], msg.sender, block.timestamp, block.timestamp + loanOffers[loanID].loanLength);
+        loanID++;
+        updateActiveOffers();
     }
 
     //This fn doesnt work
