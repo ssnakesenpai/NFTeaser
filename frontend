@@ -1,10 +1,50 @@
+<!DOCTYPE html><html><head>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+
+</head>
+
+<body>
+    <button id="btn-login">Moralis Login</button>
+    <button id="btn-logout">Logout</button>
+    <br>
+    
+    
+
+<span class="v2_37">NFTeaser</span>
+    <div class="v2_7"><div class="v60_220"></div><div class="v2_8"><div class="v2_9"><br>
+      <br><br><br>
+      <br> <i>Start your first NFTease now!</i><br>
+      <br><br><br><br>
+      <form>
+      
+      NFT contract to loan:<input type="text" id="NFTcontract"/><br><br>
+      NFT-ID:<input type="text" id="NFTid"/><br><br>
+      Loan Fee:<input type="text" id="_fee"/><br><br>
+      Collateral:<input type="text" id="_collateral"/><br><br>
+      Loan Length <b>(days)</b>:<input type="text" id="loanLength"/><br>
+      <input type="submit" value="Submit" onclick="formdata()"/><br>
+</form><br>
+      <br><div class="v2_10"></div></div><div class="v2_12"><span class="v2_16">About Us</span><span class="v2_17"></span><span class="v2_18"></span><span class="v2_19">Home</span><span class="v2_20"></span><div class="v2_21"><div class="v2_22"></div><span class="v2_23">Sign up</span></div><div class="v2_24"><span class="v2_25">EN</span><div class="v2_26"></div></div></div><div class="v2_27"><div class="v2_28"><div class="v2_29"><div class="v2_30"><div class="v2_31"></div><span class="v2_32">Discover more</span></div></div><span class="v2_35"> </span></div></div></div><div class="v15_35"></div><div class="v14_9"></div><div class="v69_412"><span class="v69_413">+</span><span class="v69_414">+</span><span class="v69_415">+</span><span class="v69_416">+</span><span class="v69_417">+</span><span class="v69_418">+</span><span class="v69_419">+</span><span class="v69_420">+</span><span class="v69_421">+</span><span class="v69_422">+</span><span class="v69_423">+</span><span class="v69_424">+</span><span class="v69_425">+</span><span class="v69_426">+</span><span class="v69_427">+</span><span class="v69_428">+</span><span class="v69_429">+</span><span class="v69_430">+</span><span class="v69_431">+</span><span class="v69_432">+</span><span class="v69_433">+</span><span class="v69_434">+</span></div><div class="v201_17"><div class="v2_61"></div><div class="v76_5"></div><div class="v15_34"></div><div class="v12_5"></div><div class="v12_6"></div><div class="v12_7"></div><div class="v75_3"></div></div><span class="v201_16">NFTeaser</span></div>
 <script>
+
+  
+    // connect to Moralis server
+
+    const serverUrl = "https://cpty5n67a4ei.usemoralis.com:2053/server";
+    const appId = "ynxVwm8NYaXc2Z0tWNJUCtPR0IYl8nRgza8stPwC";
+    Moralis.start({ serverUrl, appId });
+
+  </script>
+  <script>
     async function login() {
       let user = Moralis.User.current();
       if (!user) {
         user = await Moralis.authenticate();
       }
-      await Moralis.enableWeb3();
+
       console.log("logged in user:", user);
       
     }
@@ -14,27 +54,817 @@
       console.log("logged out");
     }
 
-    async function loanNFT() {
+    document.getElementById("btn-login").onclick = login;
+    document.getElementById("btn-logout").onclick = logOut;
+    </script>
+    <script>
+      function formdata() 
+      {
+      var NFTcontract= document.getElementById("NFTcontract").value;
+      var NFTid= document.getElementById("NFTid").value;
+      var _fee= document.getElementById("_fee").value;
+      var _collateral= document.getElementById("_collateral").value;
+      var loanLength= document.getElementById("loanLength").value;
+      document.writeln("<h1>Ayoooo</h1><br>");
+      document.writeln("LFGGGG.<br><br>");
+      document.writeln("The NFTcontract you entered is " + NFTcontract + "<br>");
+      document.writeln("The NFTid you entered is " + NFTid + "<br>");
+      document.writeln("The fee you entered is " + _fee + "<br>");
+      document.writeln("The _collateral you entered is " + _collateral + "<br>");
+      document.writeln("The loan length you entered is " + loanLength);
+      }
+      
+      
+      </script>
+
+      
+
+      <script>
+
+async function donate() {
         let options = {
-          contractAddress: "0x61685a578b988655fA48F60e4B5F0fFbBc768d1C",
+          contractAddress: "0x356d2E7a0d592bAd95E86d19479c37cfdBb68Ab9",
           functionName: "newDonation",
           abi: [
             {
-              inputs: [	{	"internalType": "address",	"name": "_nft",	"type": "address"		},	{	"internalType": "uint256",	"name": "_id","type": "uint256"	},{	"internalType": "uint256","name": "_fee",	"type": "uint256"	},{	"internalType": "uint256","name": "_collateral","type": "uint256"	},{	"internalType": "uint256","name": "_length","type": "uint256"	}],
-              name: "createLoanOffer",
+              inputs: [
+                { internalType: "string", name: "note", type: "string" },
+              ],
+              name: "newDonation",
               outputs: [],
               stateMutability: "payable",
               type: "function",
             },
           ],
           Params: {
-            _nft: "Thanks for your work",
+            Note: "Thanks for your work",
           },
           msgValue: Moralis.Units.ETH(0.1),
-        };
-        await Moralis.User.logOut();
-        console.log("logged out");
+        }}
 
-    document.getElementById("btn-login").onclick = login;
-    document.getElementById("btn-logout").onclick = logOut;
-    document.getElementById("btn-loanNFT").onclick = loanNFT;
+      
+
+
+      </script>
+
+
+
+
+
+</body>
+
+
+</html> <br/><br/> <style>* {
+  box-sizing: border-box;
+}
+body {
+  font-size: 14px;
+}
+.v2_7 {
+  width: 100%;
+  height: 1024px;
+  background: rgba(255,255,255,1);
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+.v60_220 {
+  width: 432px;
+  height: 657px;
+  background: linear-gradient(rgba(255,0,144,1), rgba(8,150,217,0.9700000286102295));
+  opacity: 1;
+  position: absolute;
+  top: 93px;
+  left: 919px;
+  border-top-left-radius: 160px;
+  border-top-right-radius: 160px;
+  border-bottom-left-radius: 160px;
+  border-bottom-right-radius: 160px;
+  transform: rotate(-63deg);
+  overflow: hidden;
+}
+.v2_8 {
+  width: 100%;
+  height: 777px;
+  background: url("../images/v2_8.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 27px;
+  left: 431px;
+  overflow: hidden;
+}
+.v2_9 {
+  width: 478px;
+  height: 496px;
+  background: url("../images/v2_9.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+.v2_10 {
+  width: 478px;
+  height: 496px;
+  background: rgba(213,174,228,1);
+  opacity: 0.30000001192092896;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  border-radius: 50%;
+}
+.v2_12 {
+  width: 823px;
+  height: 40px;
+  background: url("../images/v2_12.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 73px;
+  left: 931px;
+  overflow: hidden;
+}
+.v2_16 {
+  width: 77px;
+  color: rgba(33,40,50,1);
+  position: absolute;
+  top: 9px;
+  left: 385px;
+  font-family: Poppins;
+  font-weight: Medium;
+  font-size: 17px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_17 {
+  width: 56px;
+  color: rgba(33,40,50,1);
+  position: absolute;
+  top: 9px;
+  left: 270px;
+  font-family: Poppins;
+  font-weight: Medium;
+  font-size: 17px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_18 {
+  width: 48px;
+  color: rgba(33,40,50,1);
+  position: absolute;
+  top: 9px;
+  left: 155px;
+  font-family: Poppins;
+  font-weight: Medium;
+  font-size: 17px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_19 {
+  width: 51px;
+  color: rgba(33,40,50,1);
+  position: absolute;
+  top: 9px;
+  left: 0px;
+  font-family: Poppins;
+  font-weight: Medium;
+  font-size: 17px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_20 {
+  width: 47px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 9px;
+  left: 545px;
+  font-family: Poppins;
+  font-weight: Bold;
+  font-size: 17px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_21 {
+  width: 102px;
+  height: 40px;
+  background: url("../images/v2_21.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 0px;
+  left: 641px;
+  overflow: hidden;
+}
+.v2_22 {
+  width: 102px;
+  height: 40px;
+  background: url("../images/v2_22.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  border: 3px solid rgba(255,255,255,1);
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  overflow: hidden;
+}
+.v2_23 {
+  width: 66px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 7px;
+  left: 20px;
+  font-family: Poppins;
+  font-weight: Bold;
+  font-size: 17px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_24 {
+  width: 38px;
+  height: 26px;
+  background: url("../images/v2_24.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 9px;
+  left: 785px;
+  overflow: hidden;
+}
+.v2_25 {
+  width: 22px;
+  color: rgba(255,255,255,1);
+  position: relative;
+  top: 0px;
+  left: 0px;
+  font-family: Poppins;
+  font-weight: Bold;
+  font-size: 17px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_26 {
+  width: 9px;
+  height: 4px;
+  background: url("../images/v2_26.png");
+  opacity: 1;
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  border: 1px solid rgba(255,255,255,1);
+}
+.v2_27 {
+  width: 480px;
+  height: 462px;
+  background: url("../images/v2_27.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 316px;
+  left: 587px;
+  overflow: hidden;
+}
+.v2_28 {
+  width: 480px;
+  height: 462px;
+  background: url("../images/v2_28.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+.v2_29 {
+  width: 170px;
+  height: 60px;
+  background: url("../images/v2_29.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 402px;
+  left: 0px;
+  overflow: hidden;
+}
+.v2_30 {
+  width: 170px;
+  height: 60px;
+  background: url("../images/v2_30.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.v2_31 {
+  width: 170px;
+  height: 60px;
+  background: rgba(255,0,144,1);
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  box-shadow: 0px 20px 35px rgba(0.9450980424880981, 0.6470588445663452, 0.003921568859368563, 0.15000000596046448);
+  overflow: hidden;
+}
+.v2_32 {
+  width: 134px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  font-family: Poppins;
+  font-weight: Bold;
+  font-size: 18px;
+  opacity: 1;
+  text-align: center;
+}
+.v2_35 {
+  width: 171px;
+  color: rgba(223,105,81,1);
+  position: relative;
+  top: 0px;
+  left: 0px;
+  font-family: Poppins;
+  font-weight: Bold;
+  font-size: 20px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_36 {
+  width: 480px;
+  color: rgba(94,98,130,1);
+  position: absolute;
+  top: 267px;
+  left: 0px;
+  font-family: Poppins;
+  font-weight: Medium;
+  font-size: 18px;
+  opacity: 1;
+  text-align: left;
+}
+.v15_35 {
+  width: 9px;
+  height: 4px;
+  background: url("../images/v15_35.png");
+  opacity: 1;
+  position: absolute;
+  top: 65px;
+  left: 709px;
+  border: 1px solid rgba(33,40,50,1);
+}
+.v14_9 {
+  width: 540px;
+  height: 352px;
+  background: url("../images/v14_9.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 691px;
+  left: 130px;
+  overflow: hidden;
+}
+.v2_37 {
+  width: 379px;
+  color: rgba(23,29,75,0.9800000190734863);
+  position: absolute;
+  top: 343px;
+  left: 156px;
+  font-family: Poppins;
+  font-weight: Bold;
+  font-size: 84px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_412 {
+  width: 153px;
+  height: 166px;
+  background: url("../images/v69_412.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 355px;
+  left: 1208px;
+  overflow: hidden;
+}
+.v69_413 {
+  width: 13px;
+  color: rgba(255,113,82,1);
+  position: relative;
+  top: 0px;
+  left: 0px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_414 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 35px;
+  left: 0px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_415 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 70px;
+  left: 0px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_416 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 0px;
+  left: 35px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_417 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 35px;
+  left: 35px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_418 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 70px;
+  left: 35px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_419 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 105px;
+  left: 35px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_420 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 0px;
+  left: 70px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_421 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 35px;
+  left: 70px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_422 {
+  width: 13px;
+  color: rgba(98,70,229,1);
+  position: absolute;
+  top: 70px;
+  left: 70px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_423 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 105px;
+  left: 70px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_424 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 140px;
+  left: 70px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_425 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 0px;
+  left: 105px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_426 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 35px;
+  left: 105px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_427 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 70px;
+  left: 105px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_428 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 105px;
+  left: 105px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_429 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 140px;
+  left: 105px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_430 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 0px;
+  left: 140px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_431 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 35px;
+  left: 140px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_432 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 70px;
+  left: 140px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_433 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 105px;
+  left: 140px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v69_434 {
+  width: 13px;
+  color: rgba(229,229,229,1);
+  position: absolute;
+  top: 140px;
+  left: 140px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 22px;
+  opacity: 1;
+  text-align: left;
+}
+.v201_17 {
+  width: 100%;
+  height: 916px;
+  background: url("../images/v201_17.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 390px;
+  left: 26px;
+  overflow: hidden;
+}
+.v2_61 {
+  width: 812px;
+  height: 501px;
+  background: url("../images/v2_61.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 187px;
+  left: 665px;
+  border-top-left-radius: 52px;
+  border-top-right-radius: 52px;
+  border-bottom-left-radius: 52px;
+  border-bottom-right-radius: 52px;
+  overflow: hidden;
+}
+.v76_5 {
+  width: 90px;
+  height: 90px;
+  background: rgba(11,129,146,1);
+  opacity: 1;
+  position: absolute;
+  top: 287px;
+  left: 679px;
+  border-radius: 50%;
+}
+.v15_34 {
+  width: 695px;
+  height: 221px;
+  background: linear-gradient(rgba(254,20,152,1), rgba(248,247,247,1));
+  opacity: 1;
+  position: absolute;
+  top: 704px;
+  left: 0px;
+  border-top-left-radius: 56px;
+  border-top-right-radius: 56px;
+  border-bottom-left-radius: 56px;
+  border-bottom-right-radius: 56px;
+  transform: rotate(-17deg);
+  overflow: hidden;
+}
+.v12_5 {
+  width: 145px;
+  height: 93px;
+  background: url("../images/v12_5.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 171px;
+  left: 941px;
+  transform: rotate(-16deg);
+  overflow: hidden;
+}
+.v12_6 {
+  width: 127px;
+  height: 101px;
+  background: url("../images/v12_6.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 101px;
+  left: 828px;
+  transform: rotate(-32deg);
+  overflow: hidden;
+}
+.v12_7 {
+  width: 67px;
+  height: 47px;
+  background: url("../images/v12_7.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 50px;
+  left: 967px;
+  transform: rotate(-48deg);
+  overflow: hidden;
+}
+.v75_3 {
+  width: 150px;
+  height: 150px;
+  background: rgba(255,0,143,0.3400000035762787);
+  opacity: 1;
+  position: absolute;
+  top: 437px;
+  left: 580px;
+  border-radius: 50%;
+}
+.v201_16 {
+  width: 156px;
+  color: rgba(255,0,144,1);
+  position: absolute;
+  top: 38px;
+  left: 156px;
+  font-family: Poppins;
+  font-weight: Black;
+  font-size: 55px;
+  opacity: 1;
+  text-align: left;
+}
+</style>
