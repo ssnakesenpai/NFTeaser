@@ -101,11 +101,11 @@ contract LendNft is IERC721Receiver {
     function liquidateLoan() external payable {
         for(uint i; i<loanID; i++) { 
             //require(msg.sender == owner,"not owner"); < Do we need owner here? 
-            require(loanActive[i] == true,"loan not active");
-            require(block.timestamp > loans[i].returnTime,"not time to liquidate");
+            if(loanActive[i] == true && block.timestamp > loans[i].returnTime) { 
             loanActive[i] = false;
             loans[i].active=false;
-            payable(loans[i]._lender).transfer(loans[i].loanCollateral);
+            payable(loans[i]._lender).transfer(loans[i].loanCollateral + (loans[i].loanOffer.loanFee*9/10));
+            }
         }
     }
 
