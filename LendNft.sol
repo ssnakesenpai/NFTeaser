@@ -48,7 +48,7 @@ contract LendNft is IERC721Receiver {
     uint public loanOfferID;
     uint public loanID;
 
-    uint public timeMultiplier=1;
+    uint public timeMultiplier=86400;
 
     // Mappings from loanOfferID to respective loan
     mapping(uint => _loanOffer) public loanOffers;
